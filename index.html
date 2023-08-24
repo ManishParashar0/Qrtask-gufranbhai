@@ -1,14 +1,86 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="index.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-  </head>
-  <body>
-    <div id="gradient">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="index1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <form id="formName">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="Name" placeholder="Enter your name">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="Email" placeholder="Enter your email">
+            
+            <button type="submit" >submit</button>
 
 
+            <br>
+            <!-- <button type="button" id="downloadQR">Download QR Code</button> -->
+            <div id="qrcode">
+            <button type="button"id="generateQR"  >Generate QR Code</button><br>
+          </div>
+          <button type="button"name="downloadButton">download</button>
+        </form>
+
+        
+
+
+    </div>
+
+    <script src="qrcode.min.js"></script>
     <script src="index.js"></script>
- </body>
-</html>
+    <script>
 
-   
+  // Convert SVG to PNG using html2canvas
+  html2canvas(qrcodeContainer, { useCORS: true }).then(canvas => {
+            const dataURL = canvas.toDataURL("image/png");
+
+            // Create a link for downloading
+            const downloadLink = document.createElement("a");
+            downloadLink.href = dataURL;
+            downloadLink.download = "qrcode.png"; // Change the file name if desired
+            document.body.appendChild(downloadLink); // Append to body to trigger click
+            downloadLink.click();
+           document.body.removeChild(downloadLink); // Remove after click
+        });
+
+
+
+
+
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzDquPQoU7aqpkbvm6LFF1xo9PlhYVc7E5gECt6npYgFR_04v2pZ2m2WOm1nwyoooE/exec';
+        const form = document.forms['formName'];
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Log the response from Google Apps Script
+                
+                 alert("Thank you! Your form is submitted successfully.");
+                // window.location.reload();
+            })
+            .catch(error => console.error('Error!', error.message));
+            // ========================
+            
+        });
+      
+
+          
+           
+           
+        
+        
+        
+    </script>
+</body>
+</html>
