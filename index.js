@@ -17,12 +17,12 @@ generateQRButton.addEventListener("click", () => {
         
     });
     
-          // Convert SVG to PNG using html2canvas
-          html2canvas(qrcodeContainer, { useCORS: true }).then(canvas => {
-            const dataURL = canvas.toDataURL("image/png");
+        //   // Convert SVG to PNG using html2canvas
+        //   html2canvas(qrcodeContainer, { useCORS: true }).then(canvas => {
+        //     const dataURL = canvas.toDataURL("image/png");
 
         });
     
-});
+// });
 
 
