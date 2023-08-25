@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Scanner</title>
+</head>
+<body>
+    <h1>QR Code Scanner</h1>
+    <video id="video" autoplay></video>
+    <div id="output"></div>
+    <script src="script.js"></script>
+</body>
+<script>
+// script.js
+const video = document.getElementById('video');
+const output = document.getElementById('output');
+
+// Access user's camera
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+        video.play();
+        scanQRCode(stream);
+    })
+    .catch(error => console.error('Error accessing camera:', error));
+
+// Initialize QR code scanner
+function scanQRCode(stream) {
+    const scanner = new Instascan.Scanner({ video: video });
+    scanner.addListener('scan', content => {
+        output.innerText = 'QR Code Content: ' + content;
+        // Stop scanning after content is found
+        scanner.stop();
+        stream.getTracks().forEach(track => track.stop());
+    });
+    Instascan.Camera.getCameras().then(cameras => {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }).catch(error => console.error('Error accessing cameras:', error));
+}
+
+
+
+</script>
+</html>
